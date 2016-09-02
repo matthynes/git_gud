@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load bootstrap_pagination %}
+{% load vote_tags %}
+
+{% block title %}
+    GET GUD
+{% endblock %}
+
+<!-- Page Content -->
+<div class="container">
+    {% block content %}
+        <div class="row" id="index-row">
+            <div class="col-md-6 col-xs-6">
+                {% for post in posts %}
+                    <div class="panel panel-default post" id="{{ post.id }}">
+                        <div class="panel-heading">Posted by {{ post.submitter }}:
+                            <span id="score" style="float: right;">{{ post.score }}</span>
+                        </div>
+
+                        <div class="panel-body">{{ post.text }}</div>
+
+                        <div id="vote-links">
+                            {% if user.is_authenticated %}
+                                {% vote_exists post user as has_voted %}
+                                {% if not has_voted %}
+                                    <div class="btn-group" role="group">
+                                        <button class="btn btn-primary" onclick="vote('up', {{ post.id }})"
+                                                id="upvote{{ post.id }}">Upvote
+                                        </button>
+                                        <button class="btn btn-danger" onclick="vote('down', {{ post.id }})"
+                                                id="downvote{{ post.id }}">Downvote
+                                        </button>
+                                    </div>
+                                {% else %}
+                                    {% if post.submitter != user %}
+                                        You have already voted on this post.
+                                    {% endif %}
+                                    {#                                    <button class="btn btn-success" id="clear{{ post.id }}">Clear Vote</button>#}
+                                {% endif %}
+                            {% else %}
+                                        You must be
+                                <a href="/accounts/login">logged in</a> to vote.
+                            {% endif %}
+                            {% if post.submitter == user or user.is_staff %}
+                                <button id="deleteButton" class="btn btn-danger" data-toggle="confirmation"
+                                        data-placement="top"
+                                        data-original-title=""
+                                        data-href="/delete_post/{{ post.id }}"
+                                        data-content="Are you sure?"
+                                        title="Delete Post">Delete post
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-md-1 col-xs-2"></div>
+            <div class="col-md-5 col-xs-6">
+                {% if user.is_authenticated %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Submit a new post</div>
+                        <div class="panel-body">
+                            <form action="{% url 'create_post' %}" method="post" id="post-form">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label form="{{ post_form.text.id_for_label }}">Text</label>
+                                    <br/>
+                                    {{ post_form.text }}
+                                </div>
+                                <button type="submit" class="btn btn-default">Submit Post</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- Pagination -->
+        <div class="row text-center">
+            <div class="col-lg-12">
+                {% bootstrap_paginate posts range=10 previous_label='&laquo;' next_label='&raquo;' %}
+            </div>
+        </div>
+        <hr>
+    {% endblock %}
+</div>
+<!-- /.container -->
+
+{% block javascript %}
+    <script>
+        $('[data-toggle="confirmation"]').confirmation()</script>
+    <script>
+        var url;
+        function vote(direction, post_id) {
+            var $post = $('div#' + post_id);
+            {#            var $clickedButton, $otherButton;#}
+            {#            if (direction == 'up') {#}
+            {#                $clickedButton = $post.find('button#upvote');#}
+            {#                $otherButton = $post.find('button#downvote');#}
+            {#            } else {#}
+            {#                $clickedButton = $post.find('button#downvote');#}
+            {#                $otherButton = $post.find('button#upvote');#}
+            {#            }#}
+            {#            var $clearButton = $post.find("button#clear");#}
+            var $score = $post.find('span#score');
+            $.ajax({
+                url: "/vote/" + post_id + "/" + direction + "/",
+                type: 'get',
+                success: function (data) {
+                    $score.text(data['score']);
+                    $post.find('div#vote-links').text("You have already voted on this post.");
+                    {#                    $clearButton.css("display", "inline-block");#}
+                }
+            });
+        }
+    </script>
+{% endblock %}

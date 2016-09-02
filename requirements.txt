@@ -1,0 +1,4 @@
+Django==1.9.7
+django-bootstrap-pagination==1.6.1
+django-registration==2.1
+django-vote==1.1.2
