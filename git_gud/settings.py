@@ -8,18 +8,28 @@ SECRET_KEY = ENV['SECRET_KEY']
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+SITE_ID = 1
+
+ALLOWED_HOSTS = ['http://matthynes.pythonanywhere.com/']
 
 # Application definition
 
 INSTALLED_APPS = [
+    # django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
+    # my apps
     'git_gud_app',
+
+    # third-party apps
+    'bootstrap_pagination',
+    'vote',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -43,6 +53,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.core.context_processors.request',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -95,3 +106,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# django-registration & email settings
+
+ACCOUNT_ACTIVATION_DAYS = 7  # users have 1 week to activate their account
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'matthynesdev@gmail.com'
+EMAIL_HOST_PASSWORD = ENV['GMAIL_PASSWORD']
+EMAIL_USE_TLS = True
+LOGIN_REDIRECT_URL = '/'
