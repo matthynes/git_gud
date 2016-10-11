@@ -41,7 +41,7 @@
                                         You must be
                                 <a href="/accounts/login">logged in</a> to vote.
                             {% endif %}
-                            {% if post.submitter == user or user.is_staff %}
+                            {% if post.submitter.id == user.id or user.is_staff %}
                                 <button id="deleteButton" class="btn btn-danger" data-toggle="confirmation"
                                         data-placement="top"
                                         data-original-title=""

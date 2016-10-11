@@ -51,7 +51,7 @@
                                 <a href="#">Welcome, {{ user }}!</a>
                             </li>
                             <li>
-                                <a href="{% url 'django.contrib.auth.views.logout' %}?next=/">Logout</a>
+                                <a href="/accounts/logout?next=/">Logout</a>
                             </li>
                         {% else %}
                             <li>
