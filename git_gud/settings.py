@@ -53,7 +53,6 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.core.context_processors.request',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -118,3 +117,4 @@ EMAIL_HOST_USER = 'matthynesdev@gmail.com'
 EMAIL_HOST_PASSWORD = ENV['GMAIL_PASSWORD']
 EMAIL_USE_TLS = True
 LOGIN_REDIRECT_URL = '/'
+

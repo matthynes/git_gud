@@ -43,15 +43,14 @@ def delete_post(request, post_id):
     if request.method == 'GET':
         # I really hate to use GET for this but bootstrap-confirmation fought me
         post = Post.objects.get(id=post_id)
-        if post.submitter == request.user or request.user.is_staff:
+        if post.submitter.id == request.user.id or request.user.is_staff:
             post.delete()
-
         return HttpResponseRedirect(reverse('index'))
 
 
 def vote(request, post_id, weight):
     post = Post.objects.get(id=post_id)
-    user = request.user
+    user = request.user.id
 
     # manually sets the post's score since django-vote downvote is weird
     # but still adds the user to post.votes to check for duplicate voting and so the template tag
