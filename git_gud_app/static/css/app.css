@@ -1,0 +1,55 @@
+body {
+    padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+}
+
+footer {
+    margin: 50px 0;
+}
+
+#nav-username {
+    color: #9d9d9d;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    line-height: 20px;
+    font-size: 14px;
+}
+
+#index-row {
+    margin: auto;
+}
+
+#vote-links {
+    padding-left: 15px;
+    padding-bottom: 5px;
+}
+
+#vote-links span {
+    cursor: pointer;
+}
+
+#vote-links a:nth-child(2) {
+    margin-left: 1.5em;
+}
+
+#post-form textarea {
+    resize: none;
+    width: 100%;
+}
+
+div#score {
+    float: right;
+}
+
+button#deleteButton {
+    margin-right: 3px;
+    margin-bottom: 4px;
+    float: right;
+}
+
+div.post {
+    overflow: hidden;
+}
+
+div.popover.fade.top.in {
+    width: 20rem;
+}
